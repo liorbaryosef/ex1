@@ -14,6 +14,7 @@ struct RLEList_t{
     struct RLEList_t* nextLetter;
 };
 
+
 RLEList RLEListCreate() {
     RLEList newList = (struct RLEList_t *)malloc(sizeof(*newList));
     if (!newList) {
@@ -27,6 +28,7 @@ RLEList RLEListCreate() {
     return newList;
 }
 
+
 void RLEListDestroy(RLEList list) {
     //Free dynamically allocated memory
     while (list) {
@@ -35,6 +37,7 @@ void RLEListDestroy(RLEList list) {
         free(toDelete);
     }
 }
+
 
 RLEListResult RLEListAppend(RLEList list, char value) {
     //If null arguments received return output accordingly
@@ -63,6 +66,7 @@ RLEListResult RLEListAppend(RLEList list, char value) {
     return RLE_LIST_SUCCESS;
 }
 
+
 RLEListResult addNewCharacter(RLEList current, char value)
 {
     //If this is the first character being added
@@ -87,6 +91,7 @@ RLEListResult addNewCharacter(RLEList current, char value)
     //The addition was completed successfully
     return RLE_LIST_SUCCESS;
 }
+
 
 RLEListResult RLEListRemove(RLEList list, int index) {
     //If null arguments received return output accordingly
@@ -126,6 +131,7 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     return RLE_LIST_SUCCESS;
 }
 
+
 int RLEListSize(RLEList list) {
     //If null arguments received return output accordingly
     if (!list) {
@@ -146,6 +152,30 @@ int RLEListSize(RLEList list) {
     return size;
 }
 
+
+RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
+    //If null arguments received return output accordingly
+    if ((!list) || (!map_function)) {
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+
+    //Initiate new pointer to linked list
+    RLEList current = list;
+
+    //Change characters in linked list according to the function received
+    while (current) {
+        current->letter = map_function(current->letter);
+        current = current->nextLetter;
+    }
+
+    //The mapping was completed successfully
+    return RLE_LIST_SUCCESS;
+}
+
+
+
+
+//------------------------TO DELETE------------------------------
 
 char* RLEListExportToString(RLEList list, RLEListResult* result) {
     //Calculate list size
@@ -171,27 +201,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result) {
         current = current->nextLetter;
     }
 
-    //The mapping was completed successfully
+    //The printing was completed successfully
     *result = RLE_LIST_SUCCESS;
     return outputString;
-}
-
-
-RLEListResult RLEListMap(RLEList list, MapFunction map_function) {
-    //If null arguments received return output accordingly
-    if ((!list) || (!map_function)) {
-        return RLE_LIST_NULL_ARGUMENT;
-    }
-
-    //Initiate new pointer to linked list
-    RLEList current = list;
-
-    //Change characters in linked list according to the function received
-    while (current) {
-        current->letter = map_function(current->letter);
-        current = current->nextLetter;
-    }
-
-    //The mapping was completed successfully
-    return RLE_LIST_SUCCESS;
 }

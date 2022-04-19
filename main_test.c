@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int main() {
 
     //Testing Create-----------------------------------------------------------
@@ -79,8 +80,8 @@ int main() {
         printf("Current list:\n%s\n", linkedList);
     }
 
-    error = RLEListRemove(head,5);
-    printf("Removed index 5, error code: %d\n", error);
+    error = RLEListRemove(head,20);
+    printf("Removed index 20, error code: %d\n", error);
     linkedList = RLEListExportToString(head, result);
     if (linkedList) {
         printf("Current list: \n%s\n", linkedList);
@@ -88,6 +89,13 @@ int main() {
 
     error = RLEListRemove(head,0);
     printf("Removed index 0, error code: %d\n", error);
+    linkedList = RLEListExportToString(head, result);
+    if (linkedList) {
+        printf("Current list:\n%s\n", linkedList);
+    }
+
+    error = RLEListRemove(head,13);
+    printf("Removed index 13, error code: %d\n", error);
     linkedList = RLEListExportToString(head, result);
     if (linkedList) {
         printf("Current list:\n%s\n", linkedList);
@@ -123,6 +131,10 @@ int main() {
 
     return 0;
 }
+
+
+
+
 
 
 
