@@ -132,6 +132,34 @@ RLEListResult RLEListRemove(RLEList list, int index) {
 }
 
 
+char RLEListGet(RLEList list, int index, RLEListResult *result) {
+    //If null arguments received return output accordingly
+    if ((!list) || (index < 0)) {
+        *result = RLE_LIST_NULL_ARGUMENT;
+        return 0;
+    }
+
+    //Initiate new pointer to linked list
+    RLEList current = list;
+
+    //Go to letter with requested index
+    while ((current->appearances <= index) && (current->nextLetter) && (index > 0)) {
+        index -= current->appearances;
+        current = current->nextLetter;
+    }
+
+    //If the requested index was found, return the requested character
+    if ((index <= 0) || (current->appearances > index)) {
+        *result = RLE_LIST_SUCCESS;
+        return current->letter;
+    }
+
+    //Otherwise, return result accordingly
+    *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    return 0;
+}
+
+
 int RLEListSize(RLEList list) {
     //If null arguments received return output accordingly
     if (!list) {
