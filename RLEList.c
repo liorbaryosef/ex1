@@ -104,14 +104,14 @@ RLEListResult RLEListRemove(RLEList list, int index) {
     RLEList previous = NULL;
 
     //Go to letter with requested index
-    while ((current->appearances <= index) && (current->nextLetter) && (index > 0)) {
+    while ((current->appearances < index) && (current->nextLetter)) {
         index -= current->appearances;
         previous = current;
         current = current->nextLetter;
     }
 
     //If the requested index was found, remove node
-    if ((index <= 0) || (current->appearances > index)) {
+    if (current->appearances >= index) {
         if (current->appearances == 1) {
             if (current != list) {
                 previous->nextLetter = current->nextLetter;
@@ -121,14 +121,11 @@ RLEListResult RLEListRemove(RLEList list, int index) {
         else {
             current->appearances -= 1;
         }
+        //The removal was completed successfully
+        return RLE_LIST_SUCCESS;
     }
     //Otherwise, return result accordingly
-    else {
-        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
-    }
-
-    //The removal was completed successfully
-    return RLE_LIST_SUCCESS;
+    return RLE_LIST_INDEX_OUT_OF_BOUNDS;
 }
 
 
@@ -145,13 +142,13 @@ char RLEListGet(RLEList list, int index, RLEListResult *result) {
         RLEList current = list;
 
         //Go to letter with requested index
-        while ((current->appearances <= index) && (current->nextLetter) && (index > 0)) {
+        while ((current->appearances < index) && (current->nextLetter)) {
             index -= current->appearances;
             current = current->nextLetter;
         }
 
         //If the requested index was found, return the requested character
-        if ((index <= 0) || (current->appearances > index)) {
+        if (current->appearances >= index) {
             if (result) {
                 *result = RLE_LIST_SUCCESS;
             }
