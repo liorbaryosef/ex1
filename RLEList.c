@@ -76,15 +76,12 @@ RLEListResult addNewCharacter(RLEList current, char value)
     }
     //Otherwise, create node for new letter
     else {
-        RLEList newLetter = (struct RLEList_t *)malloc(sizeof(*newLetter));
+        RLEList newLetter = RLEListCreate();
         if (!newLetter) {
             return RLE_LIST_OUT_OF_MEMORY;
         }
-
         newLetter->letter = value;
         newLetter->appearances = 1;
-        newLetter->nextLetter = NULL;
-
         current->nextLetter = newLetter;
     }
 
@@ -95,8 +92,11 @@ RLEListResult addNewCharacter(RLEList current, char value)
 
 RLEListResult RLEListRemove(RLEList list, int index) {
     //If null arguments received return output accordingly
-    if ((!list) || (index < 0)) {
+    if (!list) {
         return RLE_LIST_NULL_ARGUMENT;
+    }
+    if (index <= 0) {
+        return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
 
     //Initiate new pointers to linked list
@@ -134,8 +134,12 @@ RLEListResult RLEListRemove(RLEList list, int index) {
 
 char RLEListGet(RLEList list, int index, RLEListResult *result) {
     //If null arguments received return output accordingly
-    if ((!list) || (index < 0)) {
+    if (!list) {
         *result = RLE_LIST_NULL_ARGUMENT;
+        return 0;
+    }
+    if (index <= 0) {
+        *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
         return 0;
     }
 
